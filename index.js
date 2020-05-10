@@ -1,19 +1,6 @@
 const inquirer = require("inquirer");
 const genMarkdown = require("./utils/generateMarkdown");
-const fs = require("fs");
-/* * At least one badge
-* Project title
-* Description
-* Table of Contents
-* Installation
-* Usage
-* License
-* Contributing
-* Tests
-* Questions
-  * User GitHub profile picture
-  * User GitHub email
-*/
+const fs = require("fs").promises;
 
 
 
@@ -67,21 +54,19 @@ const questions = [
 
 ];
 
-function writeToFile(fileName, data) {
-    fs.writeFileSync(fileName, data, function(err){
-        if (err) {
-            console.log(err);
-            throw err;
-        } 
-        console.log('Success!');
-    }) 
+const writeToFile = async(fileName, data) => {
+    const content = genMarkdown(data);
+    await fs.writeFile(fileName, content);
 }
 
-function init() {
-    inquirer.prompt(questions).then((response) => {
-        fs.readFile(genMarkdown());
-        writeToFile(response);
-    })
+async function init() {
+    try {
+        const userInput = await inquirer.prompt(questions);
+
+        await writeToFile('README.md', userInput);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 init();
