@@ -20,6 +20,16 @@ const fs = require("fs");
 const questions = [
     {
         type: 'input',
+        name: 'username',
+        message: 'What is your Github user name?'
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'What is your Github email?'
+    },
+    {
+        type: 'input',
         name: 'title',
         message: 'What is your project title?'
     },
@@ -30,8 +40,8 @@ const questions = [
     },
     {
         type: 'input',
-        name: 'contents',
-        message: 'What are the table of contents?'
+        name: 'usage',
+        message: 'What is your intended purpose?'
     },
     {
         type: 'input',
@@ -48,15 +58,32 @@ const questions = [
             'Apache',
             'BSD'
         ]
+    },
+    {
+        type: 'input',
+        name: 'contribution',
+        message: 'Who contributed to this project?'
     }
 
 ];
 
 function writeToFile(fileName, data) {
+    fs.writeFileSync(fileName, data, function(err){
+        if (err) {
+            console.log(err);
+            throw err;
+        } 
+        console.log('Success!');
+    }) 
 }
 
 function init() {
-
+    inquirer.prompt(questions).then((response) => {
+        fs.readFile(genMarkdown());
+        writeToFile(response);
+    })
 }
 
 init();
+
+// review activity 31 on video, @ 24 mins into saturday class
