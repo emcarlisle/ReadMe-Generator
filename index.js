@@ -50,7 +50,12 @@ const questions = [
         type: 'input',
         name: 'contribution',
         message: 'Who contributed to this project?'
-    }
+    },
+    {
+        type: 'input',
+        name: 'test',
+        message: 'To run tests, run the following command:'
+    },
 
 ];
 
